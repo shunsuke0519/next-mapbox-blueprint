@@ -57,7 +57,7 @@ export default function App() {
     : null;
 
   // get clusters
-  const { clusters } = useSupercluster({
+  const { clusters, supercluster } = useSupercluster({
     points,
     zoom: viewport.zoom,
     bounds,
@@ -93,7 +93,28 @@ export default function App() {
                 latitude={latitude}
                 longitude={longitude}
               >
-                <div className="cluster-marker">{pointCount}</div>
+                <div
+                  className="cluster-marker"
+                  style={{
+                    width: "${10 + PointCount / points.lenght) * 50}px",
+                    height: "${10 + PointCount / points.lenght) * 50}px",
+                  }}
+                  onClick={() => {
+                    const expansionZoom = Math.min(
+                      supercluster.getClusterExpansionZoom(cluster.id),
+                      20
+                    );
+                    setViewport({
+                      ...viewport,
+                      latitude,
+                      longitude,
+                      zoom: expansionZoom,
+                    });
+                  }}
+                >
+                  {" "}
+                  {pointCount}
+                </div>
               </Marker>
             );
           }
