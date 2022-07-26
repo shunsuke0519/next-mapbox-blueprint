@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from "react";
-import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
-import * as parkData from "../data/persons-data.json";
+import React, { useState, useRef } from "react";
+// import useSwr from "swr";
+import ReactMapGL, {
+  Marker,
+  FlyToInterpolator,
+  NavigationControl,
+} from "react-map-gl";
+import useSupercluster from "use-supercluster";
+
+// const fetcher = (...args) => fetch(...args).then(response => response.json());
 
 export default function App() {
   const navStyle = {
@@ -10,80 +17,99 @@ export default function App() {
     padding: "10px",
   };
 
+  //set up map
   const [viewport, setViewport] = useState({
-    latitude: 36.204823,
-    longitude: 138.25293,
+    latitude: 52.6376,
+    longitude: -1.135171,
     width: "100vw",
     height: "100vh",
-    zoom: 5,
+    zoom: 12,
+  });
+  const mapRef = useRef();
+
+  // load and prepare data
+  const url =
+    "https://data.police.uk/api/crimes-street/all-crime?lat=52.629729&lng=-1.131592&date=2019-10";
+
+  // const {data, error} = useSwr(url, fetcher);
+  const crimes = require("../data/skateboard-parks.json");
+  //   console.log(crimes);
+  // const crimes = data && !error ? data.slice(0, 100) : [];
+  const points = crimes.map((crime) => ({
+    type: "Feature",
+    properties: {
+      cluster: false,
+      crimeId: crime.id,
+      category: crime.category,
+    },
+    geometry: {
+      type: "Point",
+      coordinates: [
+        parseFloat(crime.location.longitude),
+        parseFloat(crime.location.latitude),
+      ],
+    },
+  }));
+
+  // get map bounds
+  const bounds = mapRef.current
+    ? mapRef.current.getMap().getBounds().toArray().flat()
+    : null;
+
+  // get clusters
+  const { clusters } = useSupercluster({
+    points,
+    zoom: viewport.zoom,
+    bounds,
+    options: { radius: 75, maxZoom: 20 },
   });
 
-  const [selectedPark, setSelectedPark] = useState(null);
-
-  useEffect(() => {
-    const listener = (e) => {
-      if (e.key === "Escape") {
-        setSelectedPark(null);
-      }
-    };
-    window.addEventListener("keydown", listener);
-
-    return () => {
-      window.removeEventListener("keydown", listener);
-    };
-  }, []);
-
+  // return map
   return (
     <div>
       <ReactMapGL
         {...viewport}
+        maxZoom={20}
         mapboxApiAccessToken={process.env.NEXT_PUBLIC_FRAMEWORK}
         mapStyle="mapbox://styles/shunsukeito/ckaanisi33g1k1ipowgmg8tdd"
-        onViewportChange={(viewport) => {
-          setViewport(viewport);
+        onViewportChange={(newViewport) => {
+          setViewport({ ...newViewport });
         }}
+        ref={mapRef}
       >
         <div className="nav" style={navStyle}>
           <NavigationControl />
         </div>
 
-        {parkData.features.map((park) => (
-          <Marker
-            key={park.properties.PARK_ID}
-            latitude={park.geometry.coordinates[1]}
-            longitude={park.geometry.coordinates[0]}
-          >
-            <button
-              className="marker-btn"
-              onClick={(e) => {
-                e.preventDefault();
-                setSelectedPark(park);
-              }}
-            >
-              <imgage src={park.properties.PICTURE_LI} alt="person" />
-            </button>
-          </Marker>
-        ))}
+        {clusters.map((cluster) => {
+          const [longitude, latitude] = cluster.geometry.coordinates;
+          const { cluster: isCluster, point_count: pointCount } =
+            cluster.properties;
 
-        {selectedPark ? (
-          <Popup
-            latitude={selectedPark.geometry.coordinates[1]}
-            longitude={selectedPark.geometry.coordinates[0]}
-            onClose={(e) => {
-              setSelectedPark(null);
-            }}
-          >
-            <div>
-              <h2>{selectedPark.properties.NAME}</h2>
-              <p>{selectedPark.properties.DESCRIPTIO}</p>
-              <imgage
-                src={selectedPark.properties.PICTURE_LI}
-                width="150"
-                height="150"
-              ></imgage>
-            </div>
-          </Popup>
-        ) : null}
+          if (isCluster) {
+            return (
+              <Marker
+                key={cluster.id}
+                latitude={latitude}
+                longitude={longitude}
+              >
+                <div className="cluster-marker">{pointCount}</div>
+              </Marker>
+            );
+          }
+
+          return (
+            <Marker
+              key={cluster.properties.crimeId}
+              latitude={latitude}
+              longitude={longitude}
+            >
+              <button className="crime-marker">
+                <imgage src="/custody.svg" alt="crime doesn't pay" />
+              </button>
+            </Marker>
+          );
+        })}
       </ReactMapGL>
     </div>
   );
