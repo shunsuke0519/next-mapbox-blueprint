@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import Image from "next/image";
+
 // import useSwr from "swr";
 import ReactMapGL, {
   Marker,
@@ -109,11 +111,14 @@ export default function App() {
                       latitude,
                       longitude,
                       zoom: expansionZoom,
+                      transitionInterpolator: new FlyToInterpolator({
+                        spped: 2,
+                      }),
+                      transitionDuration: "auto",
                     });
                   }}
                 >
-                  {" "}
-                  {pointCount}
+                  {pointCount}{" "}
                 </div>
               </Marker>
             );
@@ -126,7 +131,12 @@ export default function App() {
               longitude={longitude}
             >
               <button className="crime-marker">
-                <imgage src="/custody.svg" alt="crime doesn't pay" />
+                <Image
+                  src="/custody.svg"
+                  alt="crime doesn't pay"
+                  width="25px"
+                  height="25px"
+                />
               </button>
             </Marker>
           );
