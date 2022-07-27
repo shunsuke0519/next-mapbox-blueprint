@@ -26,8 +26,8 @@ a {
 }
 
 .cluster-marker {
-  color: #fff;
-  background: #1978c8;
+  color: black;
+  background: red;
   border-radius: 50%;
   padding: 10px;
   display: flex;

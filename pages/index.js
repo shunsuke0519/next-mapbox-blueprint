@@ -21,11 +21,11 @@ export default function App() {
 
   //set up map
   const [viewport, setViewport] = useState({
-    latitude: 52.6376,
-    longitude: -1.135171,
+    latitude: 36.204823,
+    longitude: 138.25293,
     width: "100vw",
     height: "100vh",
-    zoom: 12,
+    zoom: 4,
   });
   const mapRef = useRef();
 
@@ -34,7 +34,7 @@ export default function App() {
     "https://data.police.uk/api/crimes-street/all-crime?lat=52.629729&lng=-1.131592&date=2019-10";
 
   // const {data, error} = useSwr(url, fetcher);
-  const crimes = require("../data/skateboard-parks.json");
+  const crimes = require("../skateboard-parks.json");
   //   console.log(crimes);
   // const crimes = data && !error ? data.slice(0, 100) : [];
   const points = crimes.map((crime) => ({
@@ -42,13 +42,13 @@ export default function App() {
     properties: {
       cluster: false,
       crimeId: crime.id,
-      category: crime.category,
+      name: crime.properties.NAME,
     },
     geometry: {
       type: "Point",
       coordinates: [
-        parseFloat(crime.location.longitude),
-        parseFloat(crime.location.latitude),
+        parseFloat(crime.geometry.coordinates[0]),
+        parseFloat(crime.geometry.coordinates[1]),
       ],
     },
   }));
