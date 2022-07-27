@@ -6,6 +6,7 @@ import ReactMapGL, {
   Marker,
   FlyToInterpolator,
   NavigationControl,
+  Popup,
 } from "react-map-gl";
 import useSupercluster from "use-supercluster";
 
@@ -29,20 +30,23 @@ export default function App() {
   });
   const mapRef = useRef();
 
+  const [selectedPark, setSelectedPark] = useState(null);
+
   // load and prepare data
   const url =
     "https://data.police.uk/api/crimes-street/all-crime?lat=52.629729&lng=-1.131592&date=2019-10";
 
   // const {data, error} = useSwr(url, fetcher);
-  const crimes = require("../skateboard-parks.json");
+  const crimes = require("../data/skateboard-parks.json");
   //   console.log(crimes);
   // const crimes = data && !error ? data.slice(0, 100) : [];
   const points = crimes.map((crime) => ({
     type: "Feature",
     properties: {
       cluster: false,
-      crimeId: crime.id,
+      crimeId: crime.properties.id,
       name: crime.properties.NAME,
+      descriptio: crime.properties.DESCRIPTIO,
     },
     geometry: {
       type: "Point",
@@ -130,7 +134,13 @@ export default function App() {
               latitude={latitude}
               longitude={longitude}
             >
-              <button className="crime-marker">
+              <button
+                className="crime-marker"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedPark(cluster);
+                }}
+              >
                 <Image
                   src="/custody.svg"
                   alt="crime doesn't pay"
@@ -141,6 +151,21 @@ export default function App() {
             </Marker>
           );
         })}
+
+        {selectedPark ? (
+          <Popup
+            latitude={selectedPark.geometry.coordinates[1]}
+            longitude={selectedPark.geometry.coordinates[0]}
+            onClose={() => {
+              setSelectedPark(null);
+            }}
+          >
+            <div>
+              <h2>{selectedPark.properties.name}</h2>
+              <p>{selectedPark.properties.descriptio}</p>
+            </div>
+          </Popup>
+        ) : null}
       </ReactMapGL>
     </div>
   );
