@@ -1,6 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-
 // import useSwr from "swr";
 import ReactMapGL, {
   Marker,
@@ -32,14 +31,28 @@ export default function App() {
 
   const [selectedPark, setSelectedPark] = useState(null);
 
+  useEffect(() => {
+    const listener = (e) => {
+      if (e.key === "Escape") {
+        setSelectedPark(null);
+      }
+    };
+    window.addEventListener("keydown", listener);
+
+    return () => {
+      window.removeEventListener("keydown", listener);
+    };
+  }, []);
+
   // load and prepare data
   const url =
     "https://data.police.uk/api/crimes-street/all-crime?lat=52.629729&lng=-1.131592&date=2019-10";
 
   // const {data, error} = useSwr(url, fetcher);
   const crimes = require("../data/skateboard-parks.json");
-  //   console.log(crimes);
+  console.log(crimes);
   // const crimes = data && !error ? data.slice(0, 100) : [];
+
   const points = crimes.map((crime) => ({
     type: "Feature",
     properties: {
@@ -47,6 +60,8 @@ export default function App() {
       crimeId: crime.properties.id,
       name: crime.properties.NAME,
       descriptio: crime.properties.DESCRIPTIO,
+      //   picture: crime.properties.PICTURE_LI,
+      src: crime.properties.src,
     },
     geometry: {
       type: "Point",
@@ -142,15 +157,21 @@ export default function App() {
                 }}
               >
                 <Image
-                  src="/custody.svg"
-                  alt="crime doesn't pay"
-                  width="25px"
-                  height="25px"
+                  src={cluster.properties.src}
+                  alt="Picture of the author"
+                  width={25}
+                  height={25}
                 />
+                {/* <img
+                  src={cluster.properties.src}
+                  alt={cluster.properties.NAME}
+                /> */}
               </button>
             </Marker>
           );
         })}
+
+        {/* {seletctedPark ? () : null} */}
 
         {selectedPark ? (
           <Popup
@@ -163,6 +184,12 @@ export default function App() {
             <div>
               <h2>{selectedPark.properties.name}</h2>
               <p>{selectedPark.properties.descriptio}</p>
+              <Image
+                src={selectedPark.properties.src}
+                alt="Picture of the author"
+                width={150}
+                height={150}
+              />
             </div>
           </Popup>
         ) : null}

@@ -2,27 +2,14 @@
   {
     "type": "Feature",
     "properties": {
-      "id": 960,
-      "FACILITYID": 28014,
-      "name": "Ito Shunsuke",
-      "URL": "https://shunsukeito.com",
+      "id": 1,
+      "NAME": "Ito Shunsuke",
+      "URL": "http://localhost:8000/posts/beach-resort",
       "ADDRESS": "8720 Russell Road",
-      "ADDRESS_FR": "8720, chemin Russell",
-      "FACILITY_T": "flat",
-      "FACILITY_1": "plat",
-      "ACCESSCTRL": "no/non",
-      "ACCESSIBLE": "no/non",
       "OPEN": null,
-      "NOTES": "Outdoor",
-      "MODIFIED_D": "2018/01/18",
-      "CREATED_DA": null,
-      "FACILITY": "Neighbourhood : smaller size facility to service population of 10,000 or less",
-      "FACILITY_F": "De voisinage : petite installation assurant des services à 10 000 résidents ou moins.",
-      "DESCRIPTIO": "Echika",
+      "DESCRIPTIO": "Echikaという予定",
       "DESCRIPT_1": "Surface d'asphalte plane, 5 modules",
-      "PICTURE_LI": "logo/itoshunsuke.jpg",
-      "PICTURE_DE": null,
-      "PICTURE__1": null
+      "src": "/images/itoshunsuke.jpg"
     },
     "geometry": {
       "type": "Point",
@@ -32,31 +19,35 @@
   {
     "type": "Feature",
     "properties": {
-      "id": 1219,
-      "FACILITYID": 28001,
-      "name": "弐拾dB",
-      "URL": "https://demo.20db",
-      "ADDRESS": "1490 Youville Drive",
-      "ADDRESS_FR": "1490, promenade Youville",
-      "FACILITY_T": "other",
-      "FACILITY_1": "autre",
-      "ACCESSCTRL": "no/non",
-      "ACCESSIBLE": "no/non",
+      "id": 2,
+      "NAME": "弐拾dB",
+      "URL": "http://http://localhost:8000/posts/test-post",
+      "ADDRESS": "1490, promenade Youville",
       "OPEN": null,
-      "NOTES": "Outdoor",
-      "MODIFIED_D": "2018/01/18",
-      "CREATED_DA": null,
-      "FACILITY": "Community: mid size facility to service population of 40,000 plus",
-      "FACILITY_F": "Communautaire : installation de taille moyenne assurant des services à 40 000 résidents ou plus.",
-      "DESCRIPTIO": "尾道は瀬戸内に面した小さな町です。坂がたくさんあります。懐かしいです。でもっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっt",
-      "DESCRIPT_1": "Surface d'asphalte plane, 10 modules, programmes et camps de planche à roulettes en été géré par la Ville",
-      "PICTURE_LI": "logo/20db.jpg",
-      "PICTURE_DE": null,
-      "PICTURE__1": null
+      "DESCRIPTIO": "真夜中に営業する古本屋。",
+      "DESCRIPT_1": "Surface d'asphalte plane, 5 modules",
+      "src": "/images/itoshunsuke.jpg"
     },
     "geometry": {
       "type": "Point",
       "coordinates": [133.205103, 34.412092]
+    }
+  },
+  {
+    "type": "Feature",
+    "properties": {
+      "id": 3,
+      "NAME": "マママ",
+      "URL": "http://localhost:8000/posts/test-post",
+      "ADDRESS": "1490 Youville Drive",
+      "OPEN": null,
+      "DESCRIPTIO": "マママ。",
+      "DESCRIPT_1": "Surface d'asphalte plane, 10 modules, programmes et camps de planche à roulettes en été géré par la Ville",
+      "src": "/images/itoshunsuke.jpg"
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [133.841605, 35.486883]
     }
   }
 ]
