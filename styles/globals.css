@@ -26,13 +26,14 @@ a {
 }
 
 .cluster-marker {
-  color: black;
-  background: red;
+  /* color: chartreuse; */
+  background: white;
   border-radius: 50%;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 10;
 }
 
 .crime-marker {
@@ -41,5 +42,18 @@ a {
 }
 
 .crime-marker img {
-  width: 25px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* display non mapbox logo */
+.mapboxgl-ctrl-bottom-left {
+  display: none;
+}
+
+div.mapboxgl-popup-content {
+  font-family: "Montserrat", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3",
+    "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
 }

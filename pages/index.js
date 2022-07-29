@@ -50,7 +50,7 @@ export default function App() {
 
   // const {data, error} = useSwr(url, fetcher);
   const crimes = require("../data/skateboard-parks.json");
-  console.log(crimes);
+  //   console.log(crimes);
   // const crimes = data && !error ? data.slice(0, 100) : [];
 
   const points = crimes.map((crime) => ({
@@ -62,6 +62,8 @@ export default function App() {
       descriptio: crime.properties.DESCRIPTIO,
       //   picture: crime.properties.PICTURE_LI,
       src: crime.properties.src,
+      url: crime.properties.URL,
+      adress: crime.properties.ADDRESS_FR,
     },
     geometry: {
       type: "Point",
@@ -117,8 +119,15 @@ export default function App() {
                 <div
                   className="cluster-marker"
                   style={{
-                    width: "${10 + PointCount / points.lenght) * 50}px",
-                    height: "${10 + PointCount / points.lenght) * 50}px",
+                    width: `${30 + (pointCount / points.length) * 30}px`,
+                    height: `${30 + (pointCount / points.length) * 30}px`,
+                    border: "1px solid white",
+                    position: "absolute",
+                    margin: "auto",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                   }}
                   onClick={() => {
                     const expansionZoom = Math.min(
@@ -131,7 +140,7 @@ export default function App() {
                       longitude,
                       zoom: expansionZoom,
                       transitionInterpolator: new FlyToInterpolator({
-                        spped: 2,
+                        spped: 1.2,
                       }),
                       transitionDuration: "auto",
                     });
@@ -159,8 +168,8 @@ export default function App() {
                 <Image
                   src={cluster.properties.src}
                   alt="Picture of the author"
-                  width={25}
-                  height={25}
+                  width={50}
+                  height={50}
                 />
                 {/* <img
                   src={cluster.properties.src}
@@ -187,9 +196,18 @@ export default function App() {
               <Image
                 src={selectedPark.properties.src}
                 alt="Picture of the author"
-                width={150}
-                height={150}
+                width={200}
+                height={200}
               />
+              <h2>
+                <a
+                  href={`${selectedPark.properties.url}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {selectedPark.properties.url}
+                </a>
+              </h2>
             </div>
           </Popup>
         ) : null}
